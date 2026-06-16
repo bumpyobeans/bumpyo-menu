@@ -68,6 +68,30 @@
 
     .footer-divider { border: none; border-top: 2px solid #5c2d00; margin-top: 5mm; }
 
+    .tb-sep { width:1px; height:20px; background:rgba(255,255,255,0.25); margin:0 4px; flex-shrink:0; }
+    .tb-label { font-size:8pt; opacity:0.7; white-space:nowrap; }
+    .fmt-tb-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      cursor: pointer;
+      padding: 2px 9px;
+      border-radius: 4px;
+      font-size: 12pt;
+      font-family: serif;
+      line-height: 1.3;
+    }
+    .fmt-tb-btn:hover { background: rgba(255,255,255,0.3); }
+    .tc-dot {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      cursor: pointer;
+      flex-shrink: 0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:8px; color:#555;
+      border: 1.5px solid transparent;
+    }
+    .tc-dot:hover { border-color: white; }
     /* 포맷 툴바 */
     .format-bar {
       position: fixed;
@@ -119,6 +143,24 @@
 <div class="edit-toolbar">
   <span class="tip">✏️ 편집 모드</span>
   <span>글자를 클릭하면 바로 수정할 수 있습니다</span>
+  <div class="tb-sep"></div>
+  <button class="fmt-tb-btn" onmousedown="fmtCmd(event,'bold')"><b>B</b></button>
+  <button class="fmt-tb-btn" onmousedown="fmtCmd(event,'italic')"><i>I</i></button>
+  <div class="tb-sep"></div>
+  <span class="tb-label">글자색</span>
+  <div class="tc-dot" style="background:#1a1a1a;" onmousedown="fmtClr(event,'#1a1a1a')" title="검정"></div>
+  <div class="tc-dot" style="background:#c0392b;" onmousedown="fmtClr(event,'#c0392b')" title="빨강"></div>
+  <div class="tc-dot" style="background:#5c2d00;" onmousedown="fmtClr(event,'#5c2d00')" title="갈색"></div>
+  <div class="tc-dot" style="background:#2471a3;" onmousedown="fmtClr(event,'#2471a3')" title="파랑"></div>
+  <div class="tc-dot" style="background:#1e8449;" onmousedown="fmtClr(event,'#1e8449')" title="초록"></div>
+  <div class="tc-dot" style="background:#888;"    onmousedown="fmtClr(event,'#888')"    title="회색"></div>
+  <div class="tb-sep"></div>
+  <span class="tb-label">배경색</span>
+  <div class="tc-dot" style="background:#fff176;border:1.5px solid #aaa;" onmousedown="fmtBg(event,'#fff176')" title="노랑"></div>
+  <div class="tc-dot" style="background:#a5d6a7;border:1.5px solid #aaa;" onmousedown="fmtBg(event,'#a5d6a7')" title="초록"></div>
+  <div class="tc-dot" style="background:#ef9a9a;border:1.5px solid #aaa;" onmousedown="fmtBg(event,'#ef9a9a')" title="빨강"></div>
+  <div class="tc-dot" style="background:#90caf9;border:1.5px solid #aaa;" onmousedown="fmtBg(event,'#90caf9')" title="파랑"></div>
+  <div class="tc-dot" style="background:#fff;border:1.5px solid #aaa;"    onmousedown="fmtBg(event,'transparent')" title="제거">✕</div>
   <button class="btn-save" onclick="saveMenu()">💾 저장 &amp; 배포</button>
   <button class="btn-reset" onclick="resetMenu()">↩ 초기화</button>
   <button class="btn-print" onclick="window.print()">🖨️ 인쇄하기</button>
@@ -274,9 +316,13 @@
   window.addEventListener('DOMContentLoaded', loadMenu);
 
   // 포맷 툴바
-  function evt(e, cmd) { e.preventDefault(); document.execCommand(cmd, false, null); }
-  function clr(e, color) { e.preventDefault(); document.execCommand('foreColor', false, color); }
-  function bg(e, color) { e.preventDefault(); document.execCommand('hiliteColor', false, color); }
+  function fmtCmd(e, cmd)   { e.preventDefault(); document.execCommand(cmd, false, null); }
+  function fmtClr(e, color) { e.preventDefault(); document.execCommand('foreColor',   false, color); }
+  function fmtBg(e, color)  { e.preventDefault(); document.execCommand('hiliteColor', false, color); }
+  // 기존 플로팅 툴바 호환
+  function evt(e, cmd)   { fmtCmd(e, cmd); }
+  function clr(e, color) { fmtClr(e, color); }
+  function bg(e, color)  { fmtBg(e, color); }
 
   function posFormatBar() {
     const sel = window.getSelection();
