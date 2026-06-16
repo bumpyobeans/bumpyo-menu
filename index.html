@@ -133,8 +133,13 @@
       body { background: white; padding: 0; }
       .edit-toolbar { display: none; }
       .page { box-shadow: none; margin: 0; padding-top: 18mm; }
-      [contenteditable]:hover, [contenteditable]:focus { outline: none; background: transparent; }
+      [contenteditable]:hover, [contenteditable]:focus { outline: none; }
       @page { size: A4; margin: 0; }
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
     }
   </style>
 </head>
